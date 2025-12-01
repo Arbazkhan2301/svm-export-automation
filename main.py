@@ -19,7 +19,7 @@ API_BASE_URL = "https://svm.cert.siemens.com/portal/api/v1/"
 CLIENT_CERT = os.environ.get("CLIENT_CERT_PATH", "certs/certificate.pem")
 CLIENT_KEY = os.environ.get("CLIENT_KEY_PATH", "certs/pri-key.pem")
 CA_BUNDLE = os.environ.get("CA_BUNDLE_PATH", "certs/ca-bundle.pem")
-CLIENT_KEY_PASSPHRASE = os.environ.get("CLIENT_KEY_PASSPHRASE")
+CLIENT_KEY_PASSPHRASE = os.environ.get("CLIENT_KEY_PASSPHRASE", "")
 
 # === SSL Adapter with passphrase ===
 class SSLAdapterWithPassphrase(HTTPAdapter):
