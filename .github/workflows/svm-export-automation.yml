@@ -1,0 +1,40 @@
+name: Run SVM Export Automation
+
+on:
+  schedule:
+    - cron: '0 9 * * 1,4'  # Mon & Thu 09:00 UTC
+  workflow_dispatch:      # allows manual trigger
+
+jobs:
+  run_export:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_KEY_PASSPHRASE: ${{ secrets.CLIENT_KEY_PASSPHRASE }}
+      SHAREPOINT_SITE: ${{ secrets.SHAREPOINT_SITE }}
+      SHAREPOINT_USERNAME: ${{ secrets.SHAREPOINT_USERNAME }}
+      SHAREPOINT_PASSWORD: ${{ secrets.SHAREPOINT_PASSWORD }}
+      SHAREPOINT_FOLDER: ${{ secrets.SHAREPOINT_FOLDER }}
+      CLIENT_CERT_PATH: ${{ secrets.CLIENT_CERT_PATH }}
+      CLIENT_KEY_PATH: ${{ secrets.CLIENT_KEY_PATH }}
+      CA_BUNDLE_PATH: ${{ secrets.CA_BUNDLE_PATH }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Decode certificates
+        run: |
+          mkdir -p certs
+          echo "$CLIENT_CERT_PATH" | base64 -d > certs/certificate.pem
+          echo "$CLIENT_KEY_PATH" | base64 -d > certs/pri-key.pem
+          echo "$CA_BUNDLE_PATH" | base64 -d > certs/ca-bundle.pem
+
+      - name: Run main.py
+        run: python main.py
