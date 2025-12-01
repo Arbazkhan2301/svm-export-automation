@@ -2,25 +2,21 @@ from office365.sharepoint.client_context import ClientContext
 from office365.runtime.auth.client_credential import ClientCredential
 import os
 
-SHAREPOINT_SITE_URL = "https://innomotics.sharepoint.com/sites/ProductandSolutionSecurity/_layouts/15/viewlsts.aspx?view=14"
-DOC_LIBRARY = "Documents"
+# SHAREPOINT_SITE_URL = "https://innomotics.sharepoint.com/sites/ProductandSolutionSecurity/_layouts/15/viewlsts.aspx?view=14"
+# DOC_LIBRARY = "Documents"
 
-SHAREPOINT_SITE = os.environ.get("https://innomotics.sharepoint.com/sites/ProductandSolutionSecurity/_layouts/15/viewlsts.aspx?view=14")
-SHAREPOINT_USERNAME = os.environ.get("khan.arbaz@innomotics.com")
-SHAREPOINT_PASSWORD = os.environ.get("Ilyas12345$@")
-SHAREPOINT_FOLDER = os.environ.get("Documents")
+SHAREPOINT_SITE = os.environ.get("SHAREPOINT_SITE")
+SHAREPOINT_USERNAME = os.environ.get("SHAREPOINT_USERNAME")
+SHAREPOINT_PASSWORD = os.environ.get("SHAREPOINT_PASSWORD")
+SHAREPOINT_FOLDER = os.environ.get("SHAREPOINT_FOLDER", "Documents")
 
-ctx = ClientContext(SHAREPOINT_SITE_URL).with_credentials(
-    ClientCredential(CLIENT_ID, CLIENT_SECRET)
+ctx = ClientContext(SHAREPOINT_SITE).with_credentials(
+    ClientCredential(SHAREPOINT_USERNAME, SHAREPOINT_PASSWORD)
 )
 
 def upload_file(local_path, target_folder=None):
     filename = os.path.basename(local_path)
-
-    if target_folder:
-        target_folder = f"{DOC_LIBRARY}/{target_folder}"
-    else:
-        folder_url = DOC_LIBRARY
+    folder_url = target_folder if target_folder else SHAREPOINT_FOLDER
 
     folder = ctx.web.get_folder_by_server_relative_url(folder_url)
     with open(local_path, "rb") as content_file:

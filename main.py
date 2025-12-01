@@ -16,9 +16,9 @@ API_BASE_URL = "https://svm.cert.siemens.com/portal/api/v1/"
 # CLIENT_KEY_PASSPHRASE = "arbazkhan123456789$@"
 # CA_BUNDLE = "C:/Users/z0051rra/OneDrive - Innomotics/OpenSSL-Win64/bin/ca-bundle.pem"
 # CA_BUNDLE = "/app/certs/ca-bundle.pem"
-CLIENT_CERT = os.environ.get("certs/certificate.pem")
-CLIENT_KEY = os.environ.get("certs/pri-key.pem")
-CA_BUNDLE = os.environ.get("certs/ca-bundle.pem")
+CLIENT_CERT = os.environ.get("CLIENT_CERT_PATH", "certs/certificate.pem")
+CLIENT_KEY = os.environ.get("CLIENT_KEY_PATH", "certs/pri-key.pem")
+CA_BUNDLE = os.environ.get("CA_BUNDLE_PATH", "certs/ca-bundle.pem")
 CLIENT_KEY_PASSPHRASE = os.environ.get("CLIENT_KEY_PASSPHRASE")
 
 # === SSL Adapter with passphrase ===
