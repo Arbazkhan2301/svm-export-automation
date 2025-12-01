@@ -14,13 +14,31 @@ ctx = ClientContext(SHAREPOINT_SITE).with_credentials(
     ClientCredential(SHAREPOINT_USERNAME, SHAREPOINT_PASSWORD)
 )
 
+# def upload_file(local_path, target_folder=None):
+#     filename = os.path.basename(local_path)
+#     folder_url = target_folder if target_folder else SHAREPOINT_FOLDER
+
+#     folder = ctx.web.get_folder_by_server_relative_url(folder_url)
+#     with open(local_path, "rb") as content_file:
+#         folder.upload_file(filename, content_file).execute_query()
+
+#     print(f"Uploaded {filename} to SharePoint folder {folder_url} successfully!")
+
+    
 def upload_file(local_path, target_folder=None):
-    filename = os.path.basename(local_path)
+    from os.path import basename
+    filename = basename(local_path)
     folder_url = target_folder if target_folder else SHAREPOINT_FOLDER
 
-    folder = ctx.web.get_folder_by_server_relative_url(folder_url)
-    with open(local_path, "rb") as content_file:
-        folder.upload_file(filename, content_file).execute_query()
+    print(f"Attempting to upload {filename} to SharePoint folder: {folder_url}")
+    print(f"Using site: {SHAREPOINT_SITE}")
+    print(f"Using username: {SHAREPOINT_USERNAME}")
 
-    print(f"Uploaded {filename} to SharePoint folder {folder_url} successfully!")
+    try:
+        folder = ctx.web.get_folder_by_server_relative_url(folder_url)
+        with open(local_path, "rb") as content_file:
+            folder.upload_file(filename, content_file.read()).execute_query()
+        print(f"Uploaded {filename} to SharePoint folder {folder_url} successfully!")
+    except Exception as e:
+        print(f"ERROR uploading {filename}: {e}")
 
