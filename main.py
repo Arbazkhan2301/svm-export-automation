@@ -220,14 +220,15 @@ def main(session):
         print("No data to export.")
 
 # to run the script locally, uncomment below lines
-# if __name__ == "__main__":
-#     import requests
-#     session = requests.Session()
-#     adapter = SSLAdapterWithPassphrase(
-#         certfile=CLIENT_CERT,
-#         keyfile=CLIENT_KEY,
-#         password=CLIENT_KEY_PASSPHRASE,
-#         ca_bundle=CA_BUNDLE
-#     )
-#     session.mount('https://', adapter)
-#     main(session)
+if __name__ == "__main__":
+    print("Initialising API session with certificates...")
+    session = requests.Session()
+    adapter = SSLAdapterWithPassphrase(
+        certfile=CLIENT_CERT,
+        keyfile=CLIENT_KEY,
+        password=CLIENT_KEY_PASSPHRASE,
+        ca_bundle=CA_BUNDLE
+    )
+    # session.mount('https://', adapter)
+    print("Starting export process...")
+    main(session)
