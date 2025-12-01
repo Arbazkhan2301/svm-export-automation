@@ -200,6 +200,7 @@ def export_to_json(data, filename="/app/monitoring_lists.json"):
     print(f"Exported {len(data)} records to {filename}")
 
 def main(session):
+    print("Running main.....")
     unique_usage_dict = unique_component_usages_with_details(session)
     if unique_usage_dict:
         from datetime import datetime
@@ -211,6 +212,8 @@ def main(session):
         export_to_excel(unique_usage_dict, filename=excel_path)
         export_to_json(unique_usage_dict, filename=json_path)
 
+        output_file = "svm_exports"
+        print(f"Uploading files to SharePoint folder: {output_file}")
         upload_file(excel_path, target_folder="SVM Exports")
         upload_file(json_path, target_folder="SVM Exports")
     else:
